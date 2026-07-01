@@ -1,6 +1,5 @@
 package ru.yandex.practicum.sleeptracker;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.sleeptracker.sleepfunctions.ChronotypeFunction;
