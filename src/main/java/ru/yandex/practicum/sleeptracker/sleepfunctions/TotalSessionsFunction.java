@@ -11,7 +11,7 @@ public class TotalSessionsFunction implements SleepingAnalysisFunction {
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
-        return new SleepAnalysisResult( functionMassage, sleepingSession.size());
+        return new SleepAnalysisResult ( functionMassage, sleepingSession.size());
     }
 
     public String getFunctionMassage() {
