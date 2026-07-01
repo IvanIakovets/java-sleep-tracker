@@ -28,7 +28,7 @@ public class AverageSleepDurationFunctionTest {
         SleepAnalysisResult result = function.analyzeSleepingSession(sessions);
 
         assertEquals("Средняя продолжительность сессии: ", result.getFunctionMassage());
-        assertEquals("370,0 минут", result.getResultValue());
+        assertEquals("370.0 минут", result.getResultValue());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class AverageSleepDurationFunctionTest {
         SleepAnalysisResult result = function.analyzeSleepingSession(sessions);
 
         assertEquals("Средняя продолжительность сессии: ", result.getFunctionMassage());
-        assertEquals("2,0 минут", result.getResultValue());
+        assertEquals("2.0 минут", result.getResultValue());
     }
 
     private SleepingSession createSession(String startStr, String endStr, SleepQuality quality) {
