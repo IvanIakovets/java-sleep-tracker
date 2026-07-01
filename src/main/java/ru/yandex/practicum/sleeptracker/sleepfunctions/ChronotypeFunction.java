@@ -30,7 +30,7 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
                 ));
 
         Map<Chronotype, Long> chronotypeCount = sleepingSessionsByNight.entrySet().stream()
-                .filter(entry ->hasNightSleep(entry.getValue()))
+                .filter(entry -> hasNightSleep(entry.getValue()))
                 .map(entry -> determineChronotype(entry.getValue()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -87,6 +87,7 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
         }
     }
     private Optional<Chronotype> determineChronotype(List<SleepingSession> nightSessions) {
+
         SleepingSession mainSession = nightSessions.stream()
                 .filter(this::isNightSession)
                 .max(Comparator.comparingLong(session ->
