@@ -16,7 +16,7 @@ public class SleeplessNightsFunctionTest {
     private DateTimeFormatter formatter;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         function = new SleeplessNightsFunction();
         formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
     }
@@ -46,7 +46,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void NoSleeplessNightsFunction() {
+    void noSleeplessNightsFunction() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 22:00", "02.10.25 06:00", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 23:00", "03.10.25 05:00", SleepQuality.GOOD));
@@ -58,7 +58,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void AllSleeplessNightsFunction() {
+    void allSleeplessNightsFunction() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 07:00", "01.10.25 11:00", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 14:00", "02.10.25 15:00", SleepQuality.GOOD));
@@ -70,7 +70,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void AcrossTheNoonSleeplessNightsFunction() {
+    void acrossTheNoonSleeplessNightsFunction() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:00", "02.10.25 02:00", SleepQuality.GOOD));
 
@@ -80,7 +80,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void InNightSleeplessNightsFunction() {
+    void inNightSleeplessNightsFunction() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 01:00", "01.10.25 05:00", SleepQuality.GOOD));
 
@@ -90,7 +90,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void OnlyOneNightInSleeplessNightsFunction() {
+    void onlyOneNightInSleeplessNightsFunction() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 14:00", "01.10.25 15:00", SleepQuality.GOOD));
         sessions.add(createSession("01.10.25 23:00", "02.10.25 07:00", SleepQuality.GOOD));
@@ -101,7 +101,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void AllDurationInNightSleeplessNightsFunction() {
+    void allDurationInNightSleeplessNightsFunction() {
         // Подготовка: сессия ровно с 00:00 до 06:00
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 00:00", "01.10.25 06:00", SleepQuality.GOOD));
@@ -112,7 +112,7 @@ public class SleeplessNightsFunctionTest {
     }
 
     @Test
-    void TwoSleepInNightSleeplessNightsFunction() {
+    void twoSleepInNightSleeplessNightsFunction() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:00", "02.10.25 03:00", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 04:00", "02.10.25 08:00", SleepQuality.GOOD));

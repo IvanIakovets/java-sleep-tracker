@@ -19,7 +19,7 @@ public class MinSleepDurationFunctionTest {
     }
 
     @Test
-    void MinDuration_whenSessionsExist() {
+    void minDuration_whenSessionsExist() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 22:00", "02.10.25 06:00", SleepQuality.GOOD)); // 480 минут
         sessions.add(createSession("02.10.25 23:00", "03.10.25 01:00", SleepQuality.GOOD)); // 120 минут
@@ -32,7 +32,7 @@ public class MinSleepDurationFunctionTest {
     }
 
     @Test
-    void OneMinDuration_whenSessionsExist() {
+    void oneMinDuration_whenSessionsExist() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 22:00", "01.10.25 22:01", SleepQuality.GOOD)); // 1 минута
         sessions.add(createSession("02.10.25 23:00", "03.10.25 01:00", SleepQuality.GOOD)); // 120 минут
@@ -45,7 +45,7 @@ public class MinSleepDurationFunctionTest {
     }
 
     @Test
-    void TwoDaysDuration_whenSessionsExist() {
+    void twoDaysDuration_whenSessionsExist() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 22:00", "10.10.25 04:00", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 23:00", "08.10.25 01:00", SleepQuality.GOOD));

@@ -126,7 +126,7 @@ public class SleepTrackerApp {
     }
 
     //метод выводит список доступных функций
-    private static void readAppFunctional () {
+    private static void readAppFunctional() {
         if (FUNCTIONS.isEmpty()) {
             System.out.println("Ошибка: функции отсутствуют.");
         } else {

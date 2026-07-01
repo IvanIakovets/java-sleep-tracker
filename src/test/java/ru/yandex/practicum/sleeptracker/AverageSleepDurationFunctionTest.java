@@ -19,7 +19,7 @@ public class AverageSleepDurationFunctionTest {
     }
 
     @Test
-    void AverageDuration_whenSessionsExist() {
+    void averageDuration_whenSessionsExist() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 22:00", "02.10.25 06:00", SleepQuality.GOOD)); // 480 минут
         sessions.add(createSession("02.10.25 23:00", "03.10.25 01:00", SleepQuality.GOOD)); // 120 минут
@@ -32,7 +32,7 @@ public class AverageSleepDurationFunctionTest {
     }
 
     @Test
-    void TwoMinutesDuration_whenSessionsExist() {
+    void twoMinutesDuration_whenSessionsExist() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 22:00", "01.10.25 22:02", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 22:00", "02.10.25 22:02", SleepQuality.GOOD));

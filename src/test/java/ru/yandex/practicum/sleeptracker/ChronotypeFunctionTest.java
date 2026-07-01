@@ -38,7 +38,7 @@ public class ChronotypeFunctionTest {
     }
 
     @Test
-    void ChronotypeIsLark() {
+    void chronotypeIsLark() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:30", "02.10.25 09:30", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 23:45", "03.10.25 10:00", SleepQuality.GOOD));
@@ -53,7 +53,7 @@ public class ChronotypeFunctionTest {
     }
 
     @Test
-    void ChronotypeIsPigeon() {
+    void chronotypeIsPigeon() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:30", "02.10.25 09:30", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 23:45", "03.10.25 10:00", SleepQuality.GOOD));
@@ -67,7 +67,7 @@ public class ChronotypeFunctionTest {
     }
 
     @Test
-    void ChronotypeIsPigeonTwo() {
+    void chronotypeIsPigeonTwo() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:30", "02.10.25 06:30", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 23:45", "03.10.25 06:00", SleepQuality.GOOD));
@@ -81,7 +81,7 @@ public class ChronotypeFunctionTest {
     }
 
     @Test
-    void ChronotypeIgnoreDailySessions() {
+    void chronotypeIgnoreDailySessions() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:30", "02.10.25 09:30", SleepQuality.GOOD)); // Сова
         sessions.add(createSession("02.10.25 14:00", "02.10.25 15:00", SleepQuality.GOOD)); // Дневная
@@ -94,7 +94,7 @@ public class ChronotypeFunctionTest {
     }
 
     @Test
-    void ChronotypeOwlInTime() {
+    void chronotypeOwlInTime() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 23:01", "02.10.25 09:01", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 23:01", "03.10.25 09:01", SleepQuality.GOOD));
@@ -107,7 +107,7 @@ public class ChronotypeFunctionTest {
     }
 
     @Test
-    void ChronotypeLarkInTime() {
+    void chronotypeLarkInTime() {
         List<SleepingSession> sessions = new ArrayList<>();
         sessions.add(createSession("01.10.25 21:59", "02.10.25 06:59", SleepQuality.GOOD));
         sessions.add(createSession("02.10.25 21:59", "03.10.25 06:59", SleepQuality.GOOD));

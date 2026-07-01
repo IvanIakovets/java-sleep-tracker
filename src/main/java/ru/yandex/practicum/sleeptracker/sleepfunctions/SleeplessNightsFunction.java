@@ -55,7 +55,7 @@ public class SleeplessNightsFunction implements SleepingAnalysisFunction {
         }
     }
 
-    private boolean isNightSession(SleepingSession session){
+    private boolean isNightSession(SleepingSession session) {
         LocalDateTime sessionStart = session.getStartSleepSessionTime();
         LocalDateTime sessionEnd = session.getEndSleepSessionTime();
 
