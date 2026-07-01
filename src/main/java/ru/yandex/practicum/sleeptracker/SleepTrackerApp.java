@@ -20,6 +20,7 @@ public class SleepTrackerApp {
 
     //сюда добавляем все существующие функции
     private static final Map<String, SleepingAnalysisFunction> FUNCTIONS = new LinkedHashMap<>();
+
     static {
         // блок добавления функций
         FUNCTIONS.put("Подсчет количества сессий сна", new TotalSessionsFunction());
@@ -85,7 +86,7 @@ public class SleepTrackerApp {
     //метод для чтения файла лога сна и его обработки
     // /Users/ivanya/Documents/study/java-sleep-tracker./src/main/resources/sleep_log.txt
     private static Optional<ArrayList<SleepingSession>> sleepLogHandler(Path sleepLogPath) {
-        try (Stream<String> lines = Files.lines(sleepLogPath, StandardCharsets.UTF_8)){
+        try (Stream<String> lines = Files.lines(sleepLogPath, StandardCharsets.UTF_8)) {
             ArrayList<SleepingSession> sleepSessions = lines
                     .filter(line -> !line.isBlank())
                     .map(SleepTrackerApp::parseLineToSleepSession)
@@ -93,7 +94,7 @@ public class SleepTrackerApp {
                     .map(Optional::get)
                     .collect(Collectors.toCollection(ArrayList::new));
 
-            if (sleepSessions.isEmpty()){
+            if (sleepSessions.isEmpty()) {
                 System.out.println("Файл с логами сна пуст");
                 return Optional.empty();
             }
@@ -168,7 +169,7 @@ public class SleepTrackerApp {
 
             return Optional.of(new SleepingSession(startSleepSessionTime, endSleepSessionTime,quality));
 
-        } catch (DateTimeException e){
+        } catch (DateTimeException e) {
             System.out.println("Ошибка парсинга даты в строке: " + line);
             return Optional.empty();
         } catch (IllegalArgumentException e) {

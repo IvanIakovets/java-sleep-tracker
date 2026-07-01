@@ -63,7 +63,7 @@ public class SleeplessNightsFunction implements SleepingAnalysisFunction {
         LocalDateTime nightStart = nightDate.atTime(nightPeriodStart);
         LocalDateTime nightEnd = nightDate.atTime(nightPeriodFinish);
 
-        if (sessionStart.isBefore(nightEnd) && sessionEnd.isAfter(nightStart)){
+        if (sessionStart.isBefore(nightEnd) && sessionEnd.isAfter(nightStart)) {
             return true;
         } else {
             return false;
