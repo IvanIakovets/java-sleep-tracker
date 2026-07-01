@@ -36,7 +36,7 @@ public class SleeplessNightsFunction implements SleepingAnalysisFunction {
                 .collect(Collectors.toList());
 
         long sleeplessNights = allNightsInLogs.stream()
-                .filter(date ->!nightWithSleep.getOrDefault(date,false))
+                .filter(date -> !nightWithSleep.getOrDefault(date,false))
                 .count();
 
         return new SleepAnalysisResult(functionMassage, sleeplessNights + " из " + allNightsInLogs.size() + " ночей");
