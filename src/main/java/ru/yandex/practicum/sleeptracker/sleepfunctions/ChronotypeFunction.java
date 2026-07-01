@@ -86,8 +86,8 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
             return false;
         }
     }
-    private Optional<Chronotype> determineChronotype(List<SleepingSession> nightSessions) {
 
+    private Optional<Chronotype> determineChronotype(List<SleepingSession> nightSessions) {
         SleepingSession mainSession = nightSessions.stream()
                 .filter(this::isNightSession)
                 .max(Comparator.comparingLong(session ->
