@@ -80,7 +80,7 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
         LocalTime sleepStart = mainSession.getStartSleepSessionTime().toLocalTime();
         LocalTime wakeEnd = mainSession.getEndSleepSessionTime().toLocalTime();
 
-        if (sleepStart.isAfter(owlSleepStart) || wakeEnd.isAfter(owlSleepEnd)) {
+        if (sleepStart.isAfter(owlSleepStart) && wakeEnd.isAfter(owlSleepEnd)) {
             return Optional.of(Chronotype.OWL);
         } else if (sleepStart.isBefore(larkSleepStart) && wakeEnd.isBefore(larkSleepEnd)) {
             return Optional.of(Chronotype.LARK);

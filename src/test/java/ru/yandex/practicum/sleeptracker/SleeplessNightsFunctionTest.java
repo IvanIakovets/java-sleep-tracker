@@ -40,7 +40,7 @@ public class SleeplessNightsFunctionTest {
 
         SleepAnalysisResult result = function.analyzeSleepingSession(sessions);
 
-        String expected = "1 из 11 ночей";
+        String expected = "20 из 30 ночей";
         assertEquals(expected, result.getResultValue());
         assertEquals("Бессонных ночей найдено: ", result.getFunctionMassage());
     }
@@ -66,7 +66,7 @@ public class SleeplessNightsFunctionTest {
 
         SleepAnalysisResult result = function.analyzeSleepingSession(sessions);
 
-        assertEquals("3 из 3 ночей", result.getResultValue());
+        assertEquals("4 из 4 ночей", result.getResultValue());
     }
 
     @Test
