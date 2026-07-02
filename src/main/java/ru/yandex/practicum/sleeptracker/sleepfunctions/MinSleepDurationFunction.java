@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class MinSleepDurationFunction implements SleepingAnalysisFunction {
-    private final String functionMassage = "Минимальная продолжительность сессии: ";
+    private static final String FUNCTION_MESSAGE = "Минимальная продолжительность сессии: ";
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
@@ -19,10 +19,6 @@ public class MinSleepDurationFunction implements SleepingAnalysisFunction {
                 .orElse(0);
 
         String result = String.format("%s минут", minSessionMinutes);
-        return new SleepAnalysisResult(functionMassage, result);
-    }
-
-    public String getFunctionMassage() {
-        return functionMassage;
+        return new SleepAnalysisResult(FUNCTION_MESSAGE, result);
     }
 }

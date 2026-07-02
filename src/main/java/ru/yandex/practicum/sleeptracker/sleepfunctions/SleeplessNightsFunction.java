@@ -1,21 +1,19 @@
 package ru.yandex.practicum.sleeptracker.sleepfunctions;
 
+import ru.yandex.practicum.sleeptracker.NightSessionPredictor;
 import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.SleepingAnalysisFunction;
 import ru.yandex.practicum.sleeptracker.SleepingSession;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SleeplessNightsFunction implements SleepingAnalysisFunction {
-    private final String functionMassage = "Бессонных ночей найдено: ";
-    private final LocalTime nightPeriodStart = LocalTime.of(0,0);
-    private final LocalTime nightPeriodFinish = LocalTime.of(6,0);
+    private static final String FUNCTION_MESSAGE = "Бессонных ночей найдено: ";
+    NightSessionPredictor nightSessionPredictor = new NightSessionPredictor();
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
@@ -23,50 +21,35 @@ public class SleeplessNightsFunction implements SleepingAnalysisFunction {
 
         Map<LocalDate, Boolean> nightWithSleep = sleepingSession.stream()
                 .collect(Collectors.toMap(
-                        session -> getNightDate(session),
-                        session -> isNightSession(session),
+                        session -> nightSessionPredictor.getNightDate(session),
+                        session -> nightSessionPredictor.isNightSession(session),
                         (existing, replacment) -> existing || replacment,
                         LinkedHashMap::new
                 ));
 
-        List<LocalDate> allNightsInLogs = sleepingSession.stream()
-                .map(session -> getNightDate(session))
-                .distinct()
-                .sorted()
+        LocalDate logDaysStart = sleepingSession.stream()
+                .map(session -> nightSessionPredictor.getNightDate(session))
+                .min(LocalDate::compareTo)
+                .orElse(null);
+
+        LocalDate logDaysEnd = sleepingSession.stream()
+                .map(session -> nightSessionPredictor.getNightDate(session))
+                .max(LocalDate::compareTo)
+                .orElse(null);
+
+        if (logDaysStart == null || logDaysEnd == null) {
+            return new SleepAnalysisResult(FUNCTION_MESSAGE, "нет данных");
+        }
+
+        List<LocalDate> allNights = logDaysStart.datesUntil(logDaysEnd.plusDays(1))
                 .collect(Collectors.toList());
 
-        long sleeplessNights = allNightsInLogs.stream()
+
+        long sleeplessNights = allNights.stream()
                 .filter(date -> !nightWithSleep.getOrDefault(date,false))
                 .count();
 
-        return new SleepAnalysisResult(functionMassage, sleeplessNights + " из " + allNightsInLogs.size() + " ночей");
+        return new SleepAnalysisResult(FUNCTION_MESSAGE, sleeplessNights + " из " + allNights.size() + " ночей");
 
-    }
-
-    private LocalDate getNightDate(SleepingSession session) {
-        LocalDateTime sessionStart = session.getStartSleepSessionTime();
-        LocalTime sessionStartTime = sessionStart.toLocalTime();
-        LocalDate sessionStartDay = sessionStart.toLocalDate();
-
-        if (sessionStartTime.isAfter(LocalTime.NOON)) {
-            return sessionStartDay.plusDays(1);
-        } else {
-            return sessionStartDay;
-        }
-    }
-
-    private boolean isNightSession(SleepingSession session) {
-        LocalDateTime sessionStart = session.getStartSleepSessionTime();
-        LocalDateTime sessionEnd = session.getEndSleepSessionTime();
-
-        LocalDate nightDate = getNightDate(session);
-        LocalDateTime nightStart = nightDate.atTime(nightPeriodStart);
-        LocalDateTime nightEnd = nightDate.atTime(nightPeriodFinish);
-
-        if (sessionStart.isBefore(nightEnd) && sessionEnd.isAfter(nightStart)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

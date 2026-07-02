@@ -1,30 +1,25 @@
 package ru.yandex.practicum.sleeptracker.sleepfunctions;
 
-import ru.yandex.practicum.sleeptracker.Chronotype;
-import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
-import ru.yandex.practicum.sleeptracker.SleepingAnalysisFunction;
-import ru.yandex.practicum.sleeptracker.SleepingSession;
+import ru.yandex.practicum.sleeptracker.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChronotypeFunction implements SleepingAnalysisFunction {
-    private final String functionMassage = "Ваш хронотип: ";
+    private static final String FUNCTION_MESSAGE = "Ваш хронотип: ";
     private static final LocalTime owlSleepStart = LocalTime.of(23, 0);  // 23:00
     private static final LocalTime owlSleepEnd = LocalTime.of(9, 0);      // 09:00
     private static final LocalTime larkSleepStart = LocalTime.of(22, 0);   // 22:00
     private static final LocalTime larkSleepEnd = LocalTime.of(7, 0);
-    private final LocalTime nightPeriodStart = LocalTime.of(0,0);
-    private final LocalTime nightPeriodFinish = LocalTime.of(6,0);
+    NightSessionPredictor nightSessionPredictor = new NightSessionPredictor();
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
         Map<LocalDate, List<SleepingSession>> sleepingSessionsByNight = sleepingSession.stream()
                 .collect(Collectors.groupingBy(
-                        session -> getNightDate(session),
+                        session -> nightSessionPredictor.getNightDate(session),
                         LinkedHashMap::new,
                         Collectors.toList()
                 ));
@@ -39,57 +34,37 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
                         Collectors.counting()
                 ));
         if (chronotypeCount.isEmpty()) {
-            return new SleepAnalysisResult(functionMassage, "недостаточно данных для определения");
+            return new SleepAnalysisResult(FUNCTION_MESSAGE, "недостаточно данных для определения");
         }
 
-        Chronotype result = chronotypeCount.entrySet().stream()
-                .max(Map.Entry.comparingByValue())
+        long maxCountChronotype = chronotypeCount.values().stream()
+                .max(Long::compareTo)
+                .orElse(0L);
+
+        List<Chronotype> maxType = chronotypeCount.entrySet().stream()
+                .filter(entry -> entry.getValue() == maxCountChronotype)
                 .map(Map.Entry::getKey)
-                .orElse(Chronotype.PIGEON);
+                .collect(Collectors.toList());
 
-        if (chronotypeCount.get(Chronotype.OWL) == chronotypeCount.get(Chronotype.LARK)) {
+        Chronotype result;
+        if (maxType.size() > 1) {
             result = Chronotype.PIGEON;
-        }
-
-        return new SleepAnalysisResult(functionMassage, result);
-
-    }
-
-    private LocalDate getNightDate(SleepingSession session) {
-        LocalDateTime sessionStart = session.getStartSleepSessionTime();
-        LocalTime sessionStartTime = sessionStart.toLocalTime();
-        LocalDate sessionStartDay = sessionStart.toLocalDate();
-
-        if (sessionStartTime.isAfter(LocalTime.NOON)) {
-            return sessionStartDay.plusDays(1);
         } else {
-            return sessionStartDay;
+            result = maxType.get(0);
         }
+
+        return new SleepAnalysisResult(FUNCTION_MESSAGE, result);
+
     }
 
     private boolean hasNightSleep(List<SleepingSession> nightSessions) {
         return nightSessions.stream()
-                .anyMatch(this::isNightSession);
-    }
-
-    private boolean isNightSession(SleepingSession session) {
-        LocalDateTime sessionStart = session.getStartSleepSessionTime();
-        LocalDateTime sessionEnd = session.getEndSleepSessionTime();
-
-        LocalDate nightDate = getNightDate(session);
-        LocalDateTime nightStart = nightDate.atTime(nightPeriodStart);
-        LocalDateTime nightEnd = nightDate.atTime(nightPeriodFinish);
-
-        if (sessionStart.isBefore(nightEnd) && sessionEnd.isAfter(nightStart)) {
-            return true;
-        } else {
-            return false;
-        }
+                .anyMatch(session -> nightSessionPredictor.isNightSession(session));
     }
 
     private Optional<Chronotype> determineChronotype(List<SleepingSession> nightSessions) {
         SleepingSession mainSession = nightSessions.stream()
-                .filter(this::isNightSession)
+                .filter(nightSessionPredictor::isNightSession)
                 .max(Comparator.comparingLong(session ->
                         java.time.Duration.between(
                                 session.getStartSleepSessionTime(),
@@ -105,7 +80,7 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
         LocalTime sleepStart = mainSession.getStartSleepSessionTime().toLocalTime();
         LocalTime wakeEnd = mainSession.getEndSleepSessionTime().toLocalTime();
 
-        if (sleepStart.isAfter(owlSleepStart) && wakeEnd.isAfter(owlSleepEnd)) {
+        if (sleepStart.isAfter(owlSleepStart) || wakeEnd.isAfter(owlSleepEnd)) {
             return Optional.of(Chronotype.OWL);
         } else if (sleepStart.isBefore(larkSleepStart) && wakeEnd.isBefore(larkSleepEnd)) {
             return Optional.of(Chronotype.LARK);

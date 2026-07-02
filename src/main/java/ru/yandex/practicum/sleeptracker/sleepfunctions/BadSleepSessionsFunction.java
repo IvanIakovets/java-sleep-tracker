@@ -8,7 +8,7 @@ import ru.yandex.practicum.sleeptracker.SleepingSession;
 import java.util.List;
 
 public class BadSleepSessionsFunction implements SleepingAnalysisFunction {
-    private final String functionMassage = "Количество сессий с плохим качеством сна: ";
+    private static final String FUNCTION_MESSAGE = "Количество сессий с плохим качеством сна: ";
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
@@ -17,16 +17,12 @@ public class BadSleepSessionsFunction implements SleepingAnalysisFunction {
                 .count();
 
         if (bedSession == 0) {
-            return new SleepAnalysisResult(functionMassage, "отсутствуют");
+            return new SleepAnalysisResult(FUNCTION_MESSAGE, "отсутствуют");
         }
         if (bedSession == sleepingSession.size()) {
-            return new SleepAnalysisResult(functionMassage, "все сессии");
+            return new SleepAnalysisResult(FUNCTION_MESSAGE, "все сессии");
         }
 
-        return new SleepAnalysisResult(functionMassage, bedSession);
-    }
-
-    public String getFunctionMassage() {
-        return functionMassage;
+        return new SleepAnalysisResult(FUNCTION_MESSAGE, bedSession);
     }
 }

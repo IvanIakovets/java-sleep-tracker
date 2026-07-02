@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class AverageSleepDurationFunction implements SleepingAnalysisFunction {
-    private final String functionMassage = "Средняя продолжительность сессии: ";
+    private static final String FUNCTION_MESSAGE = "Средняя продолжительность сессии: ";
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
@@ -19,10 +19,6 @@ public class AverageSleepDurationFunction implements SleepingAnalysisFunction {
                 .orElse(0.0);
 
         String result = String.format("%.1f минут", averageSessionMinutes);
-        return new SleepAnalysisResult(functionMassage, result);
-    }
-
-    public String getFunctionMassage() {
-        return functionMassage;
+        return new SleepAnalysisResult(FUNCTION_MESSAGE, result);
     }
 }

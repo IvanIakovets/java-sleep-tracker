@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class MaxSleepDurationFunction implements SleepingAnalysisFunction {
-    private final String functionMassage = "Максимальная продолжительность сессии: ";
+    private static final String FUNCTION_MESSAGE = "Максимальная продолжительность сессии: ";
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
@@ -19,10 +19,6 @@ public class MaxSleepDurationFunction implements SleepingAnalysisFunction {
                 .orElse(0);
 
         String result = String.format("%s минут", maxSessionMinutes);
-        return new SleepAnalysisResult(functionMassage, result);
-    }
-
-    public String getFunctionMassage() {
-        return functionMassage;
+        return new SleepAnalysisResult(FUNCTION_MESSAGE, result);
     }
 }
