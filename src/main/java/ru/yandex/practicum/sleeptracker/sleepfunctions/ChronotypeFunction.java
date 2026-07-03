@@ -3,17 +3,15 @@ package ru.yandex.practicum.sleeptracker.sleepfunctions;
 import ru.yandex.practicum.sleeptracker.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChronotypeFunction implements SleepingAnalysisFunction {
     private static final String FUNCTION_MESSAGE = "Ваш хронотип: ";
-    private static final LocalTime owlSleepStart = LocalTime.of(23, 0);  // 23:00
-    private static final LocalTime owlSleepEnd = LocalTime.of(9, 0);      // 09:00
-    private static final LocalTime larkSleepStart = LocalTime.of(22, 0);   // 22:00
-    private static final LocalTime larkSleepEnd = LocalTime.of(7, 0);
-    NightSessionPredictor nightSessionPredictor = new NightSessionPredictor();
+    private static final NightSessionPredictor nightSessionPredictor = new NightSessionPredictor();
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
@@ -33,6 +31,7 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
                         chronotype -> chronotype,
                         Collectors.counting()
                 ));
+
         if (chronotypeCount.isEmpty()) {
             return new SleepAnalysisResult(FUNCTION_MESSAGE, "недостаточно данных для определения");
         }
@@ -46,15 +45,9 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        Chronotype result;
-        if (maxType.size() > 1) {
-            result = Chronotype.PIGEON;
-        } else {
-            result = maxType.get(0);
-        }
+        Chronotype result = maxType.size() > 1 ? Chronotype.PIGEON : maxType.get(0);
 
         return new SleepAnalysisResult(FUNCTION_MESSAGE, result);
-
     }
 
     private boolean hasNightSleep(List<SleepingSession> nightSessions) {
@@ -66,7 +59,7 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
         SleepingSession mainSession = nightSessions.stream()
                 .filter(nightSessionPredictor::isNightSession)
                 .max(Comparator.comparingLong(session ->
-                        java.time.Duration.between(
+                        Duration.between(
                                 session.getStartSleepSessionTime(),
                                 session.getEndSleepSessionTime()
                         ).toMinutes()
@@ -77,12 +70,24 @@ public class ChronotypeFunction implements SleepingAnalysisFunction {
             return Optional.empty();
         }
 
-        LocalTime sleepStart = mainSession.getStartSleepSessionTime().toLocalTime();
-        LocalTime wakeEnd = mainSession.getEndSleepSessionTime().toLocalTime();
+        LocalTime startTime = mainSession.getStartSleepSessionTime().toLocalTime();
+        LocalTime endTime = mainSession.getEndSleepSessionTime().toLocalTime();
 
-        if (sleepStart.isAfter(owlSleepStart) && wakeEnd.isAfter(owlSleepEnd)) {
+        boolean isOwlStart = startTime.isAfter(LocalTime.of(23, 0)) ||
+                (startTime.isBefore(LocalTime.of(6, 0)) && startTime.isAfter(LocalTime.of(0, 0)));
+
+        boolean isOwlEnd = endTime.isAfter(LocalTime.of(9, 0)) ||
+                (endTime.isBefore(LocalTime.of(6, 0)) && endTime.isAfter(LocalTime.of(0, 0)));
+
+        boolean isLarkStart = startTime.isAfter(LocalTime.of(18, 0)) &&
+                startTime.isBefore(LocalTime.of(22, 0));
+
+        boolean isLarkEnd = endTime.isAfter(LocalTime.of(4, 0)) &&
+                endTime.isBefore(LocalTime.of(7, 0));
+
+        if (isOwlStart && isOwlEnd) {
             return Optional.of(Chronotype.OWL);
-        } else if (sleepStart.isBefore(larkSleepStart) && wakeEnd.isBefore(larkSleepEnd)) {
+        } else if (isLarkStart && isLarkEnd) {
             return Optional.of(Chronotype.LARK);
         } else {
             return Optional.of(Chronotype.PIGEON);

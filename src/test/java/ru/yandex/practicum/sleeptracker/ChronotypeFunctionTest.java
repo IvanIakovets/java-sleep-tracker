@@ -24,8 +24,8 @@ public class ChronotypeFunctionTest {
     @Test
     void chronotypeIsOwl() {
         List<SleepingSession> sessions = new ArrayList<>();
-        sessions.add(createSession("01.10.25 23:30", "02.10.25 09:30", SleepQuality.GOOD));
-        sessions.add(createSession("02.10.25 23:45", "03.10.25 10:00", SleepQuality.GOOD));
+        sessions.add(createSession("02.10.25 01:30", "02.10.25 09:30", SleepQuality.GOOD));
+        sessions.add(createSession("03.10.25 02:45", "03.10.25 10:00", SleepQuality.GOOD));
         sessions.add(createSession("03.10.25 23:15", "04.10.25 09:15", SleepQuality.GOOD));
         sessions.add(createSession("04.10.25 21:45", "05.10.25 06:00", SleepQuality.GOOD));
         sessions.add(createSession("05.10.25 21:15", "06.10.25 06:15", SleepQuality.GOOD));
