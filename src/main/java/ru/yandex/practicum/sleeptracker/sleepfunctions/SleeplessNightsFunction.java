@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class SleeplessNightsFunction implements SleepingAnalysisFunction {
     private static final String FUNCTION_MESSAGE = "Бессонных ночей найдено: ";
-    NightSessionPredictor nightSessionPredictor = new NightSessionPredictor();
+    private static final NightSessionPredictor nightSessionPredictor = new NightSessionPredictor();
 
     @Override
     public SleepAnalysisResult analyzeSleepingSession(List<SleepingSession> sleepingSession) {
